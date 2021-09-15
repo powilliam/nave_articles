@@ -5,7 +5,9 @@ class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => const MaterialApp(
-        home: ArticlesScreen(),
+  Widget build(BuildContext context) => MaterialApp(
+        theme: ThemeData.light(),
+        darkTheme: ThemeData.dark(),
+        home: const ArticlesScreen(),
       );
 }
