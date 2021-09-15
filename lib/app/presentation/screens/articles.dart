@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nave_articles/app/presentation/widgets/svg_icon.dart';
 
 class ArticlesScreen extends StatelessWidget {
   static MaterialPageRoute<ArticlesScreen> route() => MaterialPageRoute(
@@ -8,9 +9,18 @@ class ArticlesScreen extends StatelessWidget {
   const ArticlesScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => const Scaffold(
+  Widget build(BuildContext context) => Scaffold(
         body: Center(
-          child: Text('ArticlesScreen'),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              const Text('ArticlesScreen'),
+              SvgIcon(
+                icon: AssetIcon.rocket,
+                color: Theme.of(context).colorScheme.primary,
+              )
+            ],
+          ),
         ),
       );
 }
