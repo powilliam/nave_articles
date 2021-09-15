@@ -17,11 +17,13 @@ class BlurredContainer extends StatelessWidget {
   final Widget? child;
 
   @override
-  Widget build(BuildContext context) => BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: sigma, sigmaY: sigma),
-        child: Container(
-          color: color.withOpacity(opacity),
-          child: child,
+  Widget build(BuildContext context) => ClipRRect(
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: sigma, sigmaY: sigma),
+          child: Container(
+            color: color.withOpacity(opacity),
+            child: child,
+          ),
         ),
       );
 }
