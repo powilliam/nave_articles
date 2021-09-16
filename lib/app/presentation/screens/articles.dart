@@ -22,6 +22,15 @@ final List<Article> _articles = List.generate(
   },
 ).map((json) => Article.fromJson(json)).toList();
 
+final List<String> _categories = _articles.fold([], (categories, article) {
+  for (final category in article.categories) {
+    if (!categories.contains(category)) {
+      categories.add(category);
+    }
+  }
+  return categories;
+});
+
 class ArticlesScreen extends StatelessWidget {
   static MaterialPageRoute<ArticlesScreen> route() => MaterialPageRoute(
         builder: (_) => const ArticlesScreen(),
@@ -34,6 +43,10 @@ class ArticlesScreen extends StatelessWidget {
         body: CustomScrollView(
           slivers: <Widget>[
             const _SliverArticlesAppBar(),
+            _SliverCategoryFilterList(
+              categories: _categories,
+              onSelect: (isSelected, index) {},
+            ),
             _SliverArticlesList(
               articles: _articles,
             ),
@@ -82,9 +95,49 @@ class _SliverArticlesAppBar extends StatelessWidget {
   }
 }
 
+class _SliverCategoryFilterList extends StatelessWidget {
+  const _SliverCategoryFilterList({
+    Key? key,
+    this.categories = const [],
+    required this.onSelect,
+  }) : super(key: key);
+
+  final List<String> categories;
+  final void Function(bool, int) onSelect;
+
+  @override
+  Widget build(BuildContext context) => SliverToBoxAdapter(
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Padding(
+            padding: const EdgeInsets.only(right: 8, top: 8, bottom: 8),
+            child: Row(
+              children: categories
+                  .map(
+                    (category) => Padding(
+                      padding: const EdgeInsets.only(left: 8),
+                      child: FilterChip(
+                        selected: false,
+                        onSelected: (selected) => onSelect(
+                          selected,
+                          categories.indexOf(category),
+                        ),
+                        label: Text(category),
+                      ),
+                    ),
+                  )
+                  .toList(),
+            ),
+          ),
+        ),
+      );
+}
+
 class _SliverArticlesList extends StatelessWidget {
-  const _SliverArticlesList({Key? key, this.articles = const []})
-      : super(key: key);
+  const _SliverArticlesList({
+    Key? key,
+    this.articles = const [],
+  }) : super(key: key);
 
   final List<Article> articles;
 

@@ -22,69 +22,44 @@ class ArticleCard extends StatelessWidget {
       child: InkWell(
         onTap: () {},
         child: Padding(
-          padding: const EdgeInsets.only(
-            top: 16,
-            left: 16,
-            right: 16,
-            bottom: 0,
-          ),
-          child: Column(
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          article.title,
-                          style: _headline6,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 8),
-                          child: Text(
-                            article.author,
-                            style: _body1?.copyWith(
-                              color: _body1.color?.withOpacity(0.6),
-                            ),
-                          ),
-                        )
-                      ],
+          padding: const EdgeInsets.all(16),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      article.title,
+                      style: _headline6,
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 30),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: SizedBox(
-                        width: 98,
-                        height: 98,
-                        child: Image.network(
-                          article.thumbnail,
-                          fit: BoxFit.cover,
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8),
+                      child: Text(
+                        article.author,
+                        style: _body1?.copyWith(
+                          color: _body1.color?.withOpacity(0.6),
                         ),
                       ),
-                    ),
-                  )
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                child: Align(
-                  alignment: Alignment.topLeft,
-                  child: Wrap(
-                    spacing: 8,
-                    children: article.categories
-                        .map(
-                          (category) => Chip(
-                            label: Text(category.capitalize()),
-                          ),
-                        )
-                        .toList(),
-                  ),
+                    )
+                  ],
                 ),
               ),
+              Padding(
+                padding: const EdgeInsets.only(left: 30),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: SizedBox(
+                    width: 98,
+                    height: 98,
+                    child: Image.network(
+                      article.thumbnail,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+              )
             ],
           ),
         ),
