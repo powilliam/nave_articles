@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:nave_articles/app/domain/entities/article.dart';
+import 'package:nave_articles/app/domain/entities/category.dart';
 import 'package:nave_articles/app/presentation/widgets/articles_list.dart';
 import 'package:nave_articles/app/presentation/widgets/blurred_container.dart';
 import 'package:nave_articles/app/presentation/widgets/category_filter.dart';
@@ -31,7 +32,7 @@ final List<String> _categories = _articles.fold([], (categories, article) {
   return categories;
 });
 
-class ArticlesScreen extends StatelessWidget {
+class ArticlesScreen extends StatefulWidget {
   static MaterialPageRoute<ArticlesScreen> route() => MaterialPageRoute(
         builder: (_) => const ArticlesScreen(),
       );
@@ -39,13 +40,33 @@ class ArticlesScreen extends StatelessWidget {
   const ArticlesScreen({Key? key}) : super(key: key);
 
   @override
+  State<ArticlesScreen> createState() => _ArticlesScreenState();
+}
+
+class _ArticlesScreenState extends State<ArticlesScreen> {
+  final List<Category> _filters = _categories
+      .map(
+        (label) => Category(
+          label: label,
+        ),
+      )
+      .toList();
+
+  @override
   Widget build(BuildContext context) => Scaffold(
         body: CustomScrollView(
           slivers: <Widget>[
             const _SliverArticlesAppBar(),
             SliverCategoryFilterList(
-              categories: _categories,
-              onSelect: (isSelected, index) {},
+              categories: _filters,
+              onSelect: (isSelected, category) => setState(() {
+                final indexOfCategory = _filters.indexOf(category);
+                final newCategory = _filters
+                    .elementAt(indexOfCategory)
+                    .copyWith(isSelected: isSelected);
+                _filters.removeAt(indexOfCategory);
+                _filters.insert(indexOfCategory, newCategory);
+              }),
             ),
             SliverArticlesList(
               articles: _articles,
