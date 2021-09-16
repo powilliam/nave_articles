@@ -58,6 +58,8 @@ class ArticleCard extends StatelessWidget {
                         child: Image.network(
                           article.thumbnail,
                           fit: BoxFit.cover,
+                          errorBuilder: (context, error, stacktrace) =>
+                              const Icon(Icons.error_outline),
                         ),
                       ),
                     ),
