@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nave_articles/app/domain/entities/article.dart';
@@ -62,13 +63,7 @@ class _SliverArticlesAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final TextStyle? _headline6 = Theme.of(context).textTheme.headline6;
-    final TextStyle _titleStyle =
-        GoogleFonts.notoSans(fontWeight: FontWeight.bold)
-            .copyWith(fontStyle: _headline6?.fontStyle);
     final ColorScheme _colorScheme = Theme.of(context).colorScheme;
-    final bool _isLight = Theme.of(context).brightness == Brightness.light;
-    final Color _contentColor =
-        _isLight ? _colorScheme.primary : _colorScheme.secondary;
     final Color _scaffoldColor = Theme.of(context).scaffoldBackgroundColor;
 
     return SliverAppBar(
@@ -84,12 +79,15 @@ class _SliverArticlesAppBar extends StatelessWidget {
         onPressed: () {},
         icon: SvgIcon(
           icon: AssetIcon.rocket,
-          color: _contentColor,
+          color: _colorScheme.primary,
         ),
       ),
       title: Text(
         'Articles',
-        style: _titleStyle.copyWith(color: _contentColor),
+        style: _headline6?.copyWith(
+          color: _colorScheme.primary,
+          fontWeight: FontWeight.bold,
+        ),
       ),
     );
   }
