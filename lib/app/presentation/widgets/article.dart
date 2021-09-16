@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nave_articles/app/domain/entities/article.dart';
+import 'package:nave_articles/app/presentation/utils/string.dart';
 
 class ArticleCard extends StatelessWidget {
   const ArticleCard({Key? key, required this.article}) : super(key: key);
@@ -38,7 +39,7 @@ class ArticleCard extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.only(top: 8),
                           child: Text(
-                            article.author,
+                            "${article.author} | ${article.publishedAt.date()}",
                             style: _body1?.copyWith(
                               color: _body1.color?.withOpacity(0.6),
                             ),
