@@ -14,8 +14,10 @@ class ArticleCard extends StatelessWidget {
         .headline6
         ?.copyWith(fontWeight: FontWeight.bold);
     final TextStyle? _body1 = Theme.of(context).textTheme.bodyText1;
+    final Color _scaffoldColor = Theme.of(context).scaffoldBackgroundColor;
 
     return Card(
+      color: _scaffoldColor,
       elevation: 0,
       child: InkWell(
         onTap: () {},

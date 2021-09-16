@@ -66,25 +66,30 @@ class _SliverArticlesAppBar extends StatelessWidget {
         GoogleFonts.notoSans(fontWeight: FontWeight.bold)
             .copyWith(fontStyle: _headline6?.fontStyle);
     final ColorScheme _colorScheme = Theme.of(context).colorScheme;
+    final bool _isLight = Theme.of(context).brightness == Brightness.light;
+    final Color _contentColor =
+        _isLight ? _colorScheme.primary : _colorScheme.secondary;
+    final Color _scaffoldColor = Theme.of(context).scaffoldBackgroundColor;
 
     return SliverAppBar(
       centerTitle: false,
       floating: true,
       backgroundColor: Colors.transparent,
       flexibleSpace: BlurredContainer(
-        sigma: 2.5,
-        opacity: .8,
-        color: _colorScheme.primary,
+        sigma: 1,
+        opacity: 0.8,
+        color: _scaffoldColor,
       ),
       leading: IconButton(
         onPressed: () {},
-        icon: const SvgIcon(
+        icon: SvgIcon(
           icon: AssetIcon.rocket,
+          color: _contentColor,
         ),
       ),
       title: Text(
         'Articles',
-        style: _titleStyle,
+        style: _titleStyle.copyWith(color: _contentColor),
       ),
     );
   }
