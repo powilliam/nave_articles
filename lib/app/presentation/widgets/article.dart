@@ -40,7 +40,9 @@ class ArticleCard extends StatelessWidget {
                           padding: const EdgeInsets.only(top: 8),
                           child: Text(
                             article.author,
-                            style: _body1,
+                            style: _body1?.copyWith(
+                              color: _body1.color?.withOpacity(0.6),
+                            ),
                           ),
                         )
                       ],
