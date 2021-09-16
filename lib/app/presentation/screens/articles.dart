@@ -86,12 +86,6 @@ class _SliverArticlesAppBar extends StatelessWidget {
         'Articles',
         style: _titleStyle,
       ),
-      actions: <Widget>[
-        IconButton(
-          onPressed: () {},
-          icon: const Icon(Icons.bookmarks),
-        )
-      ],
     );
   }
 }
