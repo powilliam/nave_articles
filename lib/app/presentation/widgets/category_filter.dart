@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nave_articles/app/presentation/utils/string.dart';
 
 class SliverCategoryFilterList extends StatelessWidget {
   const SliverCategoryFilterList({
@@ -27,7 +28,7 @@ class SliverCategoryFilterList extends StatelessWidget {
                   selected,
                   categories.indexOf(category),
                 ),
-                label: Text(category),
+                label: Text(category.capitalize()),
               ),
             ),
           )
