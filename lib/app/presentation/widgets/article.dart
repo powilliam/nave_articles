@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nave_articles/app/domain/entities/article.dart';
@@ -10,18 +11,11 @@ class ArticleCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextStyle? _headline6 = Theme.of(context).textTheme.headline6;
+    final TextStyle? _headline6 = Theme.of(context)
+        .textTheme
+        .headline6
+        ?.copyWith(fontWeight: FontWeight.bold);
     final TextStyle? _body1 = Theme.of(context).textTheme.bodyText1;
-    final TextStyle _notoSerifSubtitle1 = GoogleFonts.notoSans(
-      textStyle: _headline6,
-      fontWeight: FontWeight.bold,
-      fontSize: _headline6?.fontSize,
-    );
-    final TextStyle _notoSerifBody2 = GoogleFonts.notoSans(
-      textStyle: _body1,
-      fontSize: _body1?.fontSize,
-      color: Colors.black.withOpacity(0.8),
-    );
 
     return Card(
       elevation: 0,
@@ -40,13 +34,13 @@ class ArticleCard extends StatelessWidget {
                       children: <Widget>[
                         Text(
                           article.title,
-                          style: _notoSerifSubtitle1,
+                          style: _headline6,
                         ),
                         Padding(
                           padding: const EdgeInsets.only(top: 8),
                           child: Text(
                             article.author,
-                            style: _notoSerifBody2,
+                            style: _body1,
                           ),
                         )
                       ],

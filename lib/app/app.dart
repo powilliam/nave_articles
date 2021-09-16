@@ -7,7 +7,8 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => MaterialApp(
-        theme: ThemeData.light().withColors(),
+        theme: ThemeData().withModifiers(),
+        darkTheme: ThemeData().withModifiers(isDark: true),
         home: const ArticlesScreen(),
       );
 }
