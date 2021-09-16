@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nave_articles/app/domain/entities/article.dart';
+import 'package:nave_articles/app/presentation/utils/string.dart';
 
 class ArticleCard extends StatelessWidget {
   const ArticleCard({Key? key, required this.article}) : super(key: key);
@@ -76,7 +77,7 @@ class ArticleCard extends StatelessWidget {
                     children: article.categories
                         .map(
                           (category) => Chip(
-                            label: Text(category),
+                            label: Text(category.capitalize()),
                           ),
                         )
                         .toList(),
