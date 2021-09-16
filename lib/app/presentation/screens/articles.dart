@@ -1,8 +1,6 @@
 import 'dart:ui';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:nave_articles/app/domain/entities/article.dart';
 import 'package:nave_articles/app/presentation/widgets/articles_list.dart';
 import 'package:nave_articles/app/presentation/widgets/blurred_container.dart';
