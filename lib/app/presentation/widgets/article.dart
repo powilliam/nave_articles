@@ -12,12 +12,12 @@ class ArticleCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final TextStyle? _headline6 = Theme.of(context).textTheme.headline6;
     final TextStyle? _body1 = Theme.of(context).textTheme.bodyText1;
-    final TextStyle _notoSerifSubtitle1 = GoogleFonts.notoSerif(
+    final TextStyle _notoSerifSubtitle1 = GoogleFonts.notoSans(
       textStyle: _headline6,
       fontWeight: FontWeight.bold,
       fontSize: _headline6?.fontSize,
     );
-    final TextStyle _notoSerifBody2 = GoogleFonts.notoSerif(
+    final TextStyle _notoSerifBody2 = GoogleFonts.notoSans(
       textStyle: _body1,
       fontSize: _body1?.fontSize,
       color: Colors.black.withOpacity(0.8),
@@ -53,7 +53,7 @@ class ArticleCard extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 16),
+                    padding: const EdgeInsets.only(left: 30),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(8),
                       child: SizedBox(
