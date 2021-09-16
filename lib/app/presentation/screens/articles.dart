@@ -3,8 +3,9 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nave_articles/app/domain/entities/article.dart';
-import 'package:nave_articles/app/presentation/widgets/article.dart';
+import 'package:nave_articles/app/presentation/widgets/articles_list.dart';
 import 'package:nave_articles/app/presentation/widgets/blurred_container.dart';
+import 'package:nave_articles/app/presentation/widgets/category_filter.dart';
 import 'package:nave_articles/app/presentation/widgets/svg_icon.dart';
 
 final List<Article> _articles = List.generate(
@@ -43,11 +44,11 @@ class ArticlesScreen extends StatelessWidget {
         body: CustomScrollView(
           slivers: <Widget>[
             const _SliverArticlesAppBar(),
-            _SliverCategoryFilterList(
+            SliverCategoryFilterList(
               categories: _categories,
               onSelect: (isSelected, index) {},
             ),
-            _SliverArticlesList(
+            SliverArticlesList(
               articles: _articles,
             ),
           ],
@@ -93,59 +94,4 @@ class _SliverArticlesAppBar extends StatelessWidget {
       ],
     );
   }
-}
-
-class _SliverCategoryFilterList extends StatelessWidget {
-  const _SliverCategoryFilterList({
-    Key? key,
-    this.categories = const [],
-    required this.onSelect,
-  }) : super(key: key);
-
-  final List<String> categories;
-  final void Function(bool, int) onSelect;
-
-  @override
-  Widget build(BuildContext context) => SliverToBoxAdapter(
-        child: SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Padding(
-            padding: const EdgeInsets.only(right: 8, top: 8, bottom: 8),
-            child: Row(
-              children: categories
-                  .map(
-                    (category) => Padding(
-                      padding: const EdgeInsets.only(left: 8),
-                      child: FilterChip(
-                        selected: false,
-                        onSelected: (selected) => onSelect(
-                          selected,
-                          categories.indexOf(category),
-                        ),
-                        label: Text(category),
-                      ),
-                    ),
-                  )
-                  .toList(),
-            ),
-          ),
-        ),
-      );
-}
-
-class _SliverArticlesList extends StatelessWidget {
-  const _SliverArticlesList({
-    Key? key,
-    this.articles = const [],
-  }) : super(key: key);
-
-  final List<Article> articles;
-
-  @override
-  Widget build(BuildContext context) => SliverList(
-        delegate: SliverChildBuilderDelegate(
-          (context, index) => ArticleCard(article: articles[index]),
-          childCount: articles.length,
-        ),
-      );
 }
