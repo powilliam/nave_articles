@@ -22,12 +22,12 @@ class ArticlesScreen extends StatelessWidget {
         body: BlocConsumer<ArticlesViewModel, ArticlesState>(
           listener: (context, state) {
             switch (state.runtimeType) {
-              case Failed:
+              case ArticlesStateFailed:
                 ScaffoldMessenger.of(context)
                   ..hideCurrentSnackBar()
                   ..showSnackBar(
                     SnackBar(
-                      content: Text((state as Failed).reason),
+                      content: Text((state as ArticlesStateFailed).reason),
                     ),
                   );
                 break;
@@ -35,9 +35,11 @@ class ArticlesScreen extends StatelessWidget {
           },
           builder: (context, state) => CustomScrollView(
             slivers: <Widget>[
-              _SliverArticlesAppBar(isLoading: state is Loading),
+              _SliverArticlesAppBar(isLoading: state is ArticlesStateLoading),
               SliverCategoryFilterList(
-                categories: state is Successful ? state.categories : const [],
+                categories: state is ArticlesStateSuccessful
+                    ? state.categories
+                    : const [],
                 onSelect: (isSelected, category) =>
                     BlocProvider.of<ArticlesViewModel>(context).add(
                   ArticlesEvent.onCategoryPressed(
@@ -47,7 +49,9 @@ class ArticlesScreen extends StatelessWidget {
                 ),
               ),
               SliverArticlesList(
-                articles: state is Successful ? state.articles : const [],
+                articles: state is ArticlesStateSuccessful
+                    ? state.articles
+                    : const [],
               )
             ],
           ),

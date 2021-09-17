@@ -2,38 +2,38 @@ import 'package:equatable/equatable.dart';
 import 'package:nave_articles/app/domain/entities/article.dart';
 import 'package:nave_articles/app/domain/entities/category.dart';
 
-abstract class ArticlesState {
+abstract class ArticlesState extends Equatable {
   const ArticlesState();
 
-  factory ArticlesState.loading() => const Loading();
+  factory ArticlesState.loading() => const ArticlesStateLoading();
 
   factory ArticlesState.successful({
     final List<Article> articles = const [],
     final List<Category> categories = const [],
   }) =>
-      Successful(
+      ArticlesStateSuccessful(
         articles: articles,
         categories: categories,
       );
 
   factory ArticlesState.failed({required final String reason}) =>
-      Failed(reason: reason);
+      ArticlesStateFailed(reason: reason);
 
   ArticlesState copyWith();
 }
 
-class Loading extends ArticlesState with EquatableMixin {
-  const Loading();
+class ArticlesStateLoading extends ArticlesState {
+  const ArticlesStateLoading();
 
   @override
   List<Object> get props => [];
 
   @override
-  Loading copyWith() => const Loading();
+  ArticlesStateLoading copyWith() => const ArticlesStateLoading();
 }
 
-class Successful extends ArticlesState with EquatableMixin {
-  const Successful({
+class ArticlesStateSuccessful extends ArticlesState {
+  const ArticlesStateSuccessful({
     this.articles = const [],
     this.categories = const [],
   });
@@ -45,18 +45,18 @@ class Successful extends ArticlesState with EquatableMixin {
   List<Object> get props => [articles, categories];
 
   @override
-  Successful copyWith({
+  ArticlesStateSuccessful copyWith({
     final List<Article>? articles,
     final List<Category>? categories,
   }) =>
-      Successful(
+      ArticlesStateSuccessful(
         articles: articles ?? this.articles,
         categories: categories ?? this.categories,
       );
 }
 
-class Failed extends ArticlesState with EquatableMixin {
-  const Failed({required this.reason});
+class ArticlesStateFailed extends ArticlesState {
+  const ArticlesStateFailed({required this.reason});
 
   final String reason;
 
@@ -64,6 +64,6 @@ class Failed extends ArticlesState with EquatableMixin {
   List<Object> get props => [reason];
 
   @override
-  Failed copyWith({final String? reason}) =>
-      Failed(reason: reason ?? this.reason);
+  ArticlesStateFailed copyWith({final String? reason}) =>
+      ArticlesStateFailed(reason: reason ?? this.reason);
 }

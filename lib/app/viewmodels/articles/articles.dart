@@ -50,14 +50,15 @@ class ArticlesViewModel extends Bloc<ArticlesEvent, ArticlesState> {
     OnCategoryPressed event,
   ) async* {
     try {
-      final indexOfCategory = (state as Successful).categories.indexOf(
-            event.category,
-          );
+      final indexOfCategory =
+          (state as ArticlesStateSuccessful).categories.indexOf(
+                event.category,
+              );
       final newCategory = event.category.copyWith(isSelected: event.isSelected);
-      final newCategories = [...(state as Successful).categories]
+      final newCategories = [...(state as ArticlesStateSuccessful).categories]
         ..removeAt(indexOfCategory)
         ..insert(indexOfCategory, newCategory);
-      yield (state as Successful).copyWith(
+      yield (state as ArticlesStateSuccessful).copyWith(
         // articles: filteredArticles,
         categories: newCategories,
       );
