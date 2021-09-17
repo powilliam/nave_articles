@@ -11,10 +11,19 @@ class SliverArticlesList extends StatelessWidget {
   final List<Article> articles;
 
   @override
-  Widget build(BuildContext context) => SliverList(
-        delegate: SliverChildBuilderDelegate(
-          (context, index) => ArticleCard(article: articles[index]),
-          childCount: articles.length,
-        ),
-      );
+  Widget build(BuildContext context) => articles.isEmpty
+      ? const SliverFillRemaining(
+          child: Padding(
+            padding: EdgeInsets.all(16),
+            child: Center(
+              child: Text("Empty"),
+            ),
+          ),
+        )
+      : SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (context, index) => ArticleCard(article: articles[index]),
+            childCount: articles.length,
+          ),
+        );
 }
