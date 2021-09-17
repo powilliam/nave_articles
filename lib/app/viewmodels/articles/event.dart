@@ -4,25 +4,25 @@ import 'package:nave_articles/app/domain/entities/category.dart';
 abstract class ArticlesEvent {
   const ArticlesEvent();
 
-  factory ArticlesEvent.gotten() => Gotten();
+  factory ArticlesEvent.gotten() => ArticlesEventGotten();
 
   factory ArticlesEvent.onCategoryPressed({
     required final bool isSelected,
     required final Category category,
   }) =>
-      OnCategoryPressed(
+      ArticlesEventOnCategoryPressed(
         isSelected: isSelected,
         category: category,
       );
 }
 
-class Gotten extends ArticlesEvent with EquatableMixin {
+class ArticlesEventGotten extends ArticlesEvent with EquatableMixin {
   @override
   List<Object> get props => [];
 }
 
-class OnCategoryPressed extends ArticlesEvent with EquatableMixin {
-  const OnCategoryPressed({
+class ArticlesEventOnCategoryPressed extends ArticlesEvent with EquatableMixin {
+  const ArticlesEventOnCategoryPressed({
     required this.isSelected,
     required this.category,
   });

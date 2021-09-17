@@ -13,11 +13,11 @@ class ArticlesViewModel extends Bloc<ArticlesEvent, ArticlesState> {
   @override
   Stream<ArticlesState> mapEventToState(ArticlesEvent event) async* {
     switch (event.runtimeType) {
-      case Gotten:
+      case ArticlesEventGotten:
         yield* _mapArticlesGottenToState();
         break;
-      case OnCategoryPressed:
-        yield* _mapArticlesOnCategoryPressed(event as OnCategoryPressed);
+      case ArticlesEventOnCategoryPressed:
+        yield* _mapArticlesOnCategoryPressed(event as ArticlesEventOnCategoryPressed);
         break;
       default:
         break;
@@ -47,7 +47,7 @@ class ArticlesViewModel extends Bloc<ArticlesEvent, ArticlesState> {
   }
 
   Stream<ArticlesState> _mapArticlesOnCategoryPressed(
-    OnCategoryPressed event,
+    ArticlesEventOnCategoryPressed event,
   ) async* {
     try {
       final indexOfCategory =
