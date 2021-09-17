@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nave_articles/app/domain/entities/category.dart';
 import 'package:nave_articles/app/domain/usecases/nave.dart';
 import 'package:nave_articles/app/viewmodels/articles/event.dart';
 import 'package:nave_articles/app/viewmodels/articles/state.dart';
@@ -27,7 +28,19 @@ class ArticlesViewModel extends Bloc<ArticlesEvent, ArticlesState> {
     try {
       yield ArticlesState.loading();
       final dto = await getNaveArticlesUseCase.execute();
-      yield ArticlesState.successful(articles: dto.articles, categories: []);
+      final categories = dto.articles
+          .fold<List<String>>([], (categories, article) {
+            for (final category in article.categories) {
+              if (!categories.contains(category)) {
+                categories.add(category);
+              }
+            }
+            return categories;
+          })
+          .map((category) => Category(label: category))
+          .toList();
+      yield ArticlesState.successful(
+          articles: dto.articles, categories: categories);
     } on Exception catch (e) {
       yield ArticlesState.failed(reason: e.toString());
     }
@@ -35,5 +48,21 @@ class ArticlesViewModel extends Bloc<ArticlesEvent, ArticlesState> {
 
   Stream<ArticlesState> _mapArticlesOnCategoryPressed(
     OnCategoryPressed event,
-  ) async* {}
+  ) async* {
+    try {
+      final indexOfCategory = (state as Successful).categories.indexOf(
+            event.category,
+          );
+      final newCategory = event.category.copyWith(isSelected: event.isSelected);
+      final newCategories = [...(state as Successful).categories]
+        ..removeAt(indexOfCategory)
+        ..insert(indexOfCategory, newCategory);
+      yield (state as Successful).copyWith(
+        // articles: filteredArticles,
+        categories: newCategories,
+      );
+    } on Error {
+      yield state;
+    }
+  }
 }
