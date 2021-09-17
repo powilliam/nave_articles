@@ -1,36 +1,12 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:nave_articles/app/di/app.dart';
 import 'package:nave_articles/app/domain/entities/article.dart';
-import 'package:nave_articles/app/domain/entities/category.dart';
 import 'package:nave_articles/app/presentation/widgets/articles_list.dart';
 import 'package:nave_articles/app/presentation/widgets/blurred_container.dart';
 import 'package:nave_articles/app/presentation/widgets/category_filter.dart';
 import 'package:nave_articles/app/presentation/widgets/svg_icon.dart';
-
-final List<Article> _articles = List.generate(
-  15,
-  (index) => {
-    "title":
-        "O encontro de uma mulher com a tecnologia - minha trajetória até a Nave.rs",
-    "pubDate": "2021-07-28 13:57:52",
-    "link": "",
-    "author": "Bruna Freitas",
-    "thumbnail":
-        "https://cdn-images-1.medium.com/max/1024/1*3qh6Yp8REKsyV89u656YHg.png",
-    "content": "",
-    "categories": ["soft-skills", "cultura", "naveteam", "comunicação"]
-  },
-).map((json) => Article.fromJson(json)).toList();
-
-final List<String> _categories = _articles.fold([], (categories, article) {
-  for (final category in article.categories) {
-    if (!categories.contains(category)) {
-      categories.add(category);
-    }
-  }
-  return categories;
-});
 
 class ArticlesScreen extends StatefulWidget {
   static MaterialPageRoute<ArticlesScreen> route() => MaterialPageRoute(
@@ -44,13 +20,7 @@ class ArticlesScreen extends StatefulWidget {
 }
 
 class _ArticlesScreenState extends State<ArticlesScreen> {
-  final List<Category> _filters = _categories
-      .map(
-        (label) => Category(
-          label: label,
-        ),
-      )
-      .toList();
+  List<Article> _articles = const [];
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -58,14 +28,14 @@ class _ArticlesScreenState extends State<ArticlesScreen> {
           slivers: <Widget>[
             const _SliverArticlesAppBar(),
             SliverCategoryFilterList(
-              categories: _filters,
+              categories: const [],
               onSelect: (isSelected, category) => setState(() {
-                final indexOfCategory = _filters.indexOf(category);
-                final newCategory = _filters
-                    .elementAt(indexOfCategory)
-                    .copyWith(isSelected: isSelected);
-                _filters.removeAt(indexOfCategory);
-                _filters.insert(indexOfCategory, newCategory);
+                // final indexOfCategory = _filters.indexOf(category);
+                // final newCategory = _filters
+                //     .elementAt(indexOfCategory)
+                //     .copyWith(isSelected: isSelected);
+                // _filters.removeAt(indexOfCategory);
+                // _filters.insert(indexOfCategory, newCategory);
               }),
             ),
             SliverArticlesList(
@@ -74,6 +44,18 @@ class _ArticlesScreenState extends State<ArticlesScreen> {
           ],
         ),
       );
+
+  @override
+  void initState() {
+    super.initState();
+    AppContainer.provideNaveArticlesUseCase.execute().then(
+          (response) => setState(
+            () {
+              _articles = response.articles;
+            },
+          ),
+        );
+  }
 }
 
 class _SliverArticlesAppBar extends StatelessWidget {
