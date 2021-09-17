@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:nave_articles/app/domain/entities/article.dart';
 import 'package:nave_articles/app/presentation/widgets/article.dart';
 
@@ -12,11 +13,11 @@ class SliverArticlesList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => articles.isEmpty
-      ? const SliverFillRemaining(
+      ? SliverFillRemaining(
           child: Padding(
-            padding: EdgeInsets.all(16),
+            padding: const EdgeInsets.all(16),
             child: Center(
-              child: Text("Empty"),
+              child: Lottie.asset('assets/astronaut-animation.json'),
             ),
           ),
         )
