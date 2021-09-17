@@ -44,14 +44,14 @@ class ArticlesStateSuccessful extends ArticlesState {
   List<Article> get filteredArticles {
     final selectedCategories = categories.where((it) => it.isSelected);
     final selectedCategoriesAsLabel = selectedCategories.map((it) => it.label);
-    final articlesWhereContainsOneSelectedCategory = articles
+    final articlesWhereContainsAllSelectedCategories = articles
         .where((it) =>
             it.categories.toSet().containsAll(selectedCategoriesAsLabel))
         .toList();
 
     return selectedCategories.isEmpty
         ? articles
-        : articlesWhereContainsOneSelectedCategory;
+        : articlesWhereContainsAllSelectedCategories;
   }
 
   @override
