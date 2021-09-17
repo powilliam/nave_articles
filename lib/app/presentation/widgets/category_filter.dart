@@ -16,26 +16,28 @@ class SliverCategoryFilterList extends StatelessWidget {
   Widget build(BuildContext context) => SliverToBoxAdapter(
         child: SingleChildScrollView(
           scrollDirection: Axis.horizontal,
-          child: Padding(
-            padding: const EdgeInsets.only(right: 8, top: 8, bottom: 8),
-            child: Row(
-              children: categories
-                  .map(
-                    (category) => Padding(
-                      padding: const EdgeInsets.only(left: 8),
-                      child: FilterChip(
-                        selected: category.isSelected,
-                        onSelected: (selected) => onSelect(
-                          selected,
-                          category,
-                        ),
-                        label: Text(category.label.capitalize()),
-                      ),
-                    ),
-                  )
-                  .toList(),
-            ),
-          ),
+          child: categories.isEmpty
+              ? const SizedBox()
+              : Padding(
+                  padding: const EdgeInsets.only(right: 8, top: 8, bottom: 8),
+                  child: Row(
+                    children: categories
+                        .map(
+                          (category) => Padding(
+                            padding: const EdgeInsets.only(left: 8),
+                            child: FilterChip(
+                              selected: category.isSelected,
+                              onSelected: (selected) => onSelect(
+                                selected,
+                                category,
+                              ),
+                              label: Text(category.label.capitalize()),
+                            ),
+                          ),
+                        )
+                        .toList(),
+                  ),
+                ),
         ),
       );
 }

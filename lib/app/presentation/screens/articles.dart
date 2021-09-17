@@ -1,38 +1,14 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:nave_articles/app/domain/entities/article.dart';
-import 'package:nave_articles/app/domain/entities/category.dart';
+import 'package:nave_articles/app/di/app.dart';
+import 'package:nave_articles/app/domain/dto/articles.dart';
 import 'package:nave_articles/app/presentation/widgets/articles_list.dart';
 import 'package:nave_articles/app/presentation/widgets/blurred_container.dart';
 import 'package:nave_articles/app/presentation/widgets/category_filter.dart';
 import 'package:nave_articles/app/presentation/widgets/svg_icon.dart';
 
-final List<Article> _articles = List.generate(
-  15,
-  (index) => {
-    "title":
-        "O encontro de uma mulher com a tecnologia - minha trajetória até a Nave.rs",
-    "pubDate": "2021-07-28 13:57:52",
-    "link": "",
-    "author": "Bruna Freitas",
-    "thumbnail":
-        "https://cdn-images-1.medium.com/max/1024/1*3qh6Yp8REKsyV89u656YHg.png",
-    "content": "",
-    "categories": ["soft-skills", "cultura", "naveteam", "comunicação"]
-  },
-).map((json) => Article.fromJson(json)).toList();
-
-final List<String> _categories = _articles.fold([], (categories, article) {
-  for (final category in article.categories) {
-    if (!categories.contains(category)) {
-      categories.add(category);
-    }
-  }
-  return categories;
-});
-
-class ArticlesScreen extends StatefulWidget {
+class ArticlesScreen extends StatelessWidget {
   static MaterialPageRoute<ArticlesScreen> route() => MaterialPageRoute(
         builder: (_) => const ArticlesScreen(),
       );
@@ -40,36 +16,19 @@ class ArticlesScreen extends StatefulWidget {
   const ArticlesScreen({Key? key}) : super(key: key);
 
   @override
-  State<ArticlesScreen> createState() => _ArticlesScreenState();
-}
-
-class _ArticlesScreenState extends State<ArticlesScreen> {
-  final List<Category> _filters = _categories
-      .map(
-        (label) => Category(
-          label: label,
-        ),
-      )
-      .toList();
-
-  @override
   Widget build(BuildContext context) => Scaffold(
         body: CustomScrollView(
           slivers: <Widget>[
             const _SliverArticlesAppBar(),
             SliverCategoryFilterList(
-              categories: _filters,
-              onSelect: (isSelected, category) => setState(() {
-                final indexOfCategory = _filters.indexOf(category);
-                final newCategory = _filters
-                    .elementAt(indexOfCategory)
-                    .copyWith(isSelected: isSelected);
-                _filters.removeAt(indexOfCategory);
-                _filters.insert(indexOfCategory, newCategory);
-              }),
+              categories: const [],
+              onSelect: (isSelected, category) {},
             ),
-            SliverArticlesList(
-              articles: _articles,
+            FutureBuilder<ArticlesDTO>(
+              future: AppContainer.provideNaveArticlesUseCase.execute(),
+              builder: (context, snapshot) => SliverArticlesList(
+                articles: snapshot.hasData ? snapshot.data!.articles : const [],
+              ),
             ),
           ],
         ),
