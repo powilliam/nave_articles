@@ -40,7 +40,7 @@ class ArticlesScreen extends StatelessWidget {
                 categories: state is ArticlesStateSuccessful
                     ? state.categories
                     : const [],
-                onSelect: (isSelected, category) =>
+                onSelected: (isSelected, category) =>
                     BlocProvider.of<ArticlesViewModel>(context).add(
                   ArticlesEvent.onCategoryPressed(
                     isSelected: isSelected,
@@ -50,7 +50,7 @@ class ArticlesScreen extends StatelessWidget {
               ),
               SliverArticlesList(
                 articles: state is ArticlesStateSuccessful
-                    ? state.articles
+                    ? state.filteredArticles
                     : const [],
               )
             ],

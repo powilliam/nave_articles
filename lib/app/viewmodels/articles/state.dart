@@ -41,6 +41,19 @@ class ArticlesStateSuccessful extends ArticlesState {
   final List<Article> articles;
   final List<Category> categories;
 
+  List<Article> get filteredArticles {
+    final selectedCategories = categories.where((it) => it.isSelected);
+    final selectedCategoriesAsLabel = selectedCategories.map((it) => it.label);
+    final articlesWhereContainsOneSelectedCategory = articles
+        .where((it) =>
+            it.categories.toSet().containsAll(selectedCategoriesAsLabel))
+        .toList();
+
+    return selectedCategories.isEmpty
+        ? articles
+        : articlesWhereContainsOneSelectedCategory;
+  }
+
   @override
   List<Object> get props => [articles, categories];
 
