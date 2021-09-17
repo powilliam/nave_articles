@@ -1,14 +1,13 @@
 import 'package:dio/dio.dart';
-import 'package:equatable/equatable.dart';
 
-class GetRssAsJsonUseCase<T extends Equatable> {
+class GetRssAsJsonUseCase {
   const GetRssAsJsonUseCase(this._client);
 
   final Dio _client;
 
-  Future<Response<T>> execute(final String url) async {
+  Future<Response<Map<String, dynamic>>> execute(final String url) async {
     final Map<String, dynamic> queryParameters = {'rss_url': url};
-    return await _client.get<T>(
+    return await _client.get(
       '/v1/api.json',
       queryParameters: queryParameters,
     );
