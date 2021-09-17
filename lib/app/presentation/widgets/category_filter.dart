@@ -6,11 +6,11 @@ class SliverCategoryFilterList extends StatelessWidget {
   const SliverCategoryFilterList({
     Key? key,
     this.categories = const [],
-    required this.onSelect,
+    required this.onSelected,
   }) : super(key: key);
 
   final List<Category> categories;
-  final void Function(bool, Category) onSelect;
+  final void Function(bool, Category) onSelected;
 
   @override
   Widget build(BuildContext context) => SliverToBoxAdapter(
@@ -27,7 +27,7 @@ class SliverCategoryFilterList extends StatelessWidget {
                             padding: const EdgeInsets.only(left: 8),
                             child: FilterChip(
                               selected: category.isSelected,
-                              onSelected: (selected) => onSelect(
+                              onSelected: (selected) => onSelected(
                                 selected,
                                 category,
                               ),

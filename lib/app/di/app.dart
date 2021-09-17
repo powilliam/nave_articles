@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:nave_articles/app/domain/usecases/nave.dart';
 import 'package:nave_articles/app/domain/usecases/rss.dart';
+import 'package:nave_articles/app/viewmodels/articles/articles.dart';
 
 abstract class AppContainer {
   static final Dio provideRssClient = Dio(
@@ -12,4 +13,7 @@ abstract class AppContainer {
 
   static final GetNaveArticlesUseCase provideNaveArticlesUseCase =
       GetNaveArticlesUseCase(provideGetRssAsJsonUseCaseForArticles);
+
+  static final ArticlesViewModel provideArticlesViewModel =
+      ArticlesViewModel(getNaveArticlesUseCase: provideNaveArticlesUseCase);
 }
