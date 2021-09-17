@@ -2,25 +2,18 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:nave_articles/app/di/app.dart';
-import 'package:nave_articles/app/domain/entities/article.dart';
+import 'package:nave_articles/app/domain/dto/articles.dart';
 import 'package:nave_articles/app/presentation/widgets/articles_list.dart';
 import 'package:nave_articles/app/presentation/widgets/blurred_container.dart';
 import 'package:nave_articles/app/presentation/widgets/category_filter.dart';
 import 'package:nave_articles/app/presentation/widgets/svg_icon.dart';
 
-class ArticlesScreen extends StatefulWidget {
+class ArticlesScreen extends StatelessWidget {
   static MaterialPageRoute<ArticlesScreen> route() => MaterialPageRoute(
         builder: (_) => const ArticlesScreen(),
       );
 
   const ArticlesScreen({Key? key}) : super(key: key);
-
-  @override
-  State<ArticlesScreen> createState() => _ArticlesScreenState();
-}
-
-class _ArticlesScreenState extends State<ArticlesScreen> {
-  List<Article> _articles = const [];
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -29,33 +22,17 @@ class _ArticlesScreenState extends State<ArticlesScreen> {
             const _SliverArticlesAppBar(),
             SliverCategoryFilterList(
               categories: const [],
-              onSelect: (isSelected, category) => setState(() {
-                // final indexOfCategory = _filters.indexOf(category);
-                // final newCategory = _filters
-                //     .elementAt(indexOfCategory)
-                //     .copyWith(isSelected: isSelected);
-                // _filters.removeAt(indexOfCategory);
-                // _filters.insert(indexOfCategory, newCategory);
-              }),
+              onSelect: (isSelected, category) {},
             ),
-            SliverArticlesList(
-              articles: _articles,
+            FutureBuilder<ArticlesDTO>(
+              future: AppContainer.provideNaveArticlesUseCase.execute(),
+              builder: (context, snapshot) => SliverArticlesList(
+                articles: snapshot.hasData ? snapshot.data!.articles : const [],
+              ),
             ),
           ],
         ),
       );
-
-  @override
-  void initState() {
-    super.initState();
-    AppContainer.provideNaveArticlesUseCase.execute().then(
-          (response) => setState(
-            () {
-              _articles = response.articles;
-            },
-          ),
-        );
-  }
 }
 
 class _SliverArticlesAppBar extends StatelessWidget {
