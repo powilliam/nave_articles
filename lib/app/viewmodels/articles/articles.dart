@@ -20,20 +20,25 @@ class ArticlesViewModel extends Bloc<ArticlesEvent, ArticlesState> {
   Stream<ArticlesState> mapEventToState(ArticlesEvent event) async* {
     switch (event.runtimeType) {
       case ArticlesEventGotten:
-        yield* _mapArticlesGottenToState();
+        yield* _mapArticlesGottenOrOnRefreshToState();
         break;
       case ArticlesEventOnCategoryPressed:
         yield* _mapArticlesOnCategoryPressed(
             event as ArticlesEventOnCategoryPressed);
+        break;
+      case ArticlesEventOnRefresh:
+        yield* _mapArticlesGottenOrOnRefreshToState(isRefreshing: true);
         break;
       default:
         break;
     }
   }
 
-  Stream<ArticlesState> _mapArticlesGottenToState() async* {
+  Stream<ArticlesState> _mapArticlesGottenOrOnRefreshToState({
+    final bool isRefreshing = false,
+  }) async* {
     try {
-      yield ArticlesState.loading();
+      yield !isRefreshing ? ArticlesState.loading() : state.copyWith();
       final response = await repository.getArticlesAndCategories();
       yield ArticlesState.successful(
         articles: response[Response.articles],
