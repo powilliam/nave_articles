@@ -23,7 +23,11 @@ class SliverArticlesList extends StatelessWidget {
         )
       : SliverList(
           delegate: SliverChildBuilderDelegate(
-            (context, index) => ArticleCard(article: articles[index]),
+            (context, index) => index.isEven
+                ? ArticleCard(article: articles[index])
+                : const Divider(),
+            semanticIndexCallback: (widget, index) =>
+                index.isEven ? index ~/ 2 : null,
             childCount: articles.length,
           ),
         );

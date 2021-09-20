@@ -21,6 +21,7 @@ class ArticleCard extends StatelessWidget {
       color: _scaffoldColor,
       elevation: 0,
       child: InkWell(
+        borderRadius: BorderRadius.circular(8),
         onTap: () async =>
             await canLaunch(article.link) ? await launch(article.link) : null,
         child: Column(
@@ -69,7 +70,6 @@ class ArticleCard extends StatelessWidget {
                 ],
               ),
             ),
-            const Divider()
           ],
         ),
       ),
