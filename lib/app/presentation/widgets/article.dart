@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nave_articles/app/domain/entities/article.dart';
 import 'package:nave_articles/app/presentation/utils/string.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ArticleCard extends StatelessWidget {
   const ArticleCard({Key? key, required this.article}) : super(key: key);
@@ -20,7 +21,8 @@ class ArticleCard extends StatelessWidget {
       color: _scaffoldColor,
       elevation: 0,
       child: InkWell(
-        onTap: () {},
+        onTap: () async =>
+            await canLaunch(article.link) ? await launch(article.link) : null,
         child: Column(
           children: [
             Padding(
