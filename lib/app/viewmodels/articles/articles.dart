@@ -1,13 +1,19 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nave_articles/app/domain/entities/category.dart';
+import 'package:nave_articles/app/domain/repositories/articles.dart';
 import 'package:nave_articles/app/domain/usecases/nave.dart';
 import 'package:nave_articles/app/viewmodels/articles/event.dart';
 import 'package:nave_articles/app/viewmodels/articles/state.dart';
 
 class ArticlesViewModel extends Bloc<ArticlesEvent, ArticlesState> {
-  ArticlesViewModel({required this.getNaveArticlesUseCase})
-      : super(ArticlesState.successful(articles: [], categories: []));
+  ArticlesViewModel({
+    required this.repository,
+    required this.getNaveArticlesUseCase,
+  }) : super(
+          ArticlesState.successful(articles: const [], categories: const []),
+        );
 
+  final ArticlesRepository repository;
   final GetNaveArticlesUseCase getNaveArticlesUseCase;
 
   @override
@@ -17,7 +23,8 @@ class ArticlesViewModel extends Bloc<ArticlesEvent, ArticlesState> {
         yield* _mapArticlesGottenToState();
         break;
       case ArticlesEventOnCategoryPressed:
-        yield* _mapArticlesOnCategoryPressed(event as ArticlesEventOnCategoryPressed);
+        yield* _mapArticlesOnCategoryPressed(
+            event as ArticlesEventOnCategoryPressed);
         break;
       default:
         break;
@@ -27,20 +34,11 @@ class ArticlesViewModel extends Bloc<ArticlesEvent, ArticlesState> {
   Stream<ArticlesState> _mapArticlesGottenToState() async* {
     try {
       yield ArticlesState.loading();
-      final dto = await getNaveArticlesUseCase.execute();
-      final categories = dto.articles
-          .fold<List<String>>([], (categories, article) {
-            for (final category in article.categories) {
-              if (!categories.contains(category)) {
-                categories.add(category);
-              }
-            }
-            return categories;
-          })
-          .map((category) => Category(label: category))
-          .toList();
+      final response = await repository.getArticlesAndCategories();
       yield ArticlesState.successful(
-          articles: dto.articles, categories: categories);
+        articles: response[Response.articles],
+        categories: response[Response.categories],
+      );
     } on Exception catch (e) {
       yield ArticlesState.failed(reason: e.toString());
     }
