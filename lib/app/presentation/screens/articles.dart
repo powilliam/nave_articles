@@ -33,27 +33,36 @@ class ArticlesScreen extends StatelessWidget {
                 break;
             }
           },
-          builder: (context, state) => CustomScrollView(
-            slivers: <Widget>[
-              _SliverArticlesAppBar(isLoading: state is ArticlesStateLoading),
-              SliverCategoryFilterList(
-                categories: state is ArticlesStateSuccessful
-                    ? state.categories
-                    : const [],
-                onSelected: (isSelected, category) =>
-                    BlocProvider.of<ArticlesViewModel>(context).add(
-                  ArticlesEvent.onCategoryPressed(
-                    isSelected: isSelected,
-                    category: category,
+          builder: (context, state) => RefreshIndicator(
+            edgeOffset: 64,
+            onRefresh: () {
+              BlocProvider.of<ArticlesViewModel>(context).add(
+                ArticlesEvent.gotten(),
+              );
+              return Future.delayed(const Duration(seconds: 1));
+            },
+            child: CustomScrollView(
+              slivers: <Widget>[
+                _SliverArticlesAppBar(isLoading: state is ArticlesStateLoading),
+                SliverCategoryFilterList(
+                  categories: state is ArticlesStateSuccessful
+                      ? state.categories
+                      : const [],
+                  onSelected: (isSelected, category) =>
+                      BlocProvider.of<ArticlesViewModel>(context).add(
+                    ArticlesEvent.onCategoryPressed(
+                      isSelected: isSelected,
+                      category: category,
+                    ),
                   ),
                 ),
-              ),
-              SliverArticlesList(
-                articles: state is ArticlesStateSuccessful
-                    ? state.filteredArticles
-                    : const [],
-              )
-            ],
+                SliverArticlesList(
+                  articles: state is ArticlesStateSuccessful
+                      ? state.filteredArticles
+                      : const [],
+                )
+              ],
+            ),
           ),
         ),
       );
