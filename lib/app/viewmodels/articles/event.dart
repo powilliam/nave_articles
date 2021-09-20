@@ -14,6 +14,8 @@ abstract class ArticlesEvent {
         isSelected: isSelected,
         category: category,
       );
+
+  factory ArticlesEvent.onRefresh() => const ArticlesEventOnRefresh();
 }
 
 class ArticlesEventGotten extends ArticlesEvent with EquatableMixin {
@@ -32,4 +34,11 @@ class ArticlesEventOnCategoryPressed extends ArticlesEvent with EquatableMixin {
 
   @override
   List<Object> get props => [isSelected, category];
+}
+
+class ArticlesEventOnRefresh extends ArticlesEvent with EquatableMixin {
+  const ArticlesEventOnRefresh();
+
+  @override
+  List<Object> get props => [];
 }

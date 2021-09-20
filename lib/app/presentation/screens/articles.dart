@@ -37,7 +37,7 @@ class ArticlesScreen extends StatelessWidget {
             edgeOffset: 64,
             onRefresh: () {
               BlocProvider.of<ArticlesViewModel>(context).add(
-                ArticlesEvent.gotten(),
+                ArticlesEvent.onRefresh(),
               );
               return Future.delayed(const Duration(seconds: 1));
             },
