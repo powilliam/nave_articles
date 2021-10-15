@@ -10,15 +10,15 @@ class ArticleCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextStyle? _headline6 = Theme.of(context)
+    final TextStyle? headline6 = Theme.of(context)
         .textTheme
         .headline6
         ?.copyWith(fontWeight: FontWeight.bold);
-    final TextStyle? _body1 = Theme.of(context).textTheme.bodyText1;
-    final Color _scaffoldColor = Theme.of(context).scaffoldBackgroundColor;
+    final TextStyle? body1 = Theme.of(context).textTheme.bodyText1;
+    final Color scaffoldColor = Theme.of(context).scaffoldBackgroundColor;
 
     return Card(
-      color: _scaffoldColor,
+      color: scaffoldColor,
       elevation: 0,
       child: InkWell(
         borderRadius: BorderRadius.circular(8),
@@ -37,14 +37,14 @@ class ArticleCard extends StatelessWidget {
                       children: <Widget>[
                         Text(
                           article.title,
-                          style: _headline6,
+                          style: headline6,
                         ),
                         Padding(
                           padding: const EdgeInsets.only(top: 8),
                           child: Text(
                             "${article.author} | ${article.publishedAt.date()}",
-                            style: _body1?.copyWith(
-                              color: _body1.color?.withOpacity(0.6),
+                            style: body1?.copyWith(
+                              color: body1.color?.withOpacity(0.6),
                             ),
                           ),
                         )

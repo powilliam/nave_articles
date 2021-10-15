@@ -21,16 +21,14 @@ class ArticlesScreen extends StatelessWidget {
   Widget build(BuildContext context) => Scaffold(
         body: BlocConsumer<ArticlesViewModel, ArticlesState>(
           listener: (context, state) {
-            switch (state.runtimeType) {
-              case ArticlesStateFailed:
-                ScaffoldMessenger.of(context)
-                  ..hideCurrentSnackBar()
-                  ..showSnackBar(
-                    SnackBar(
-                      content: Text((state as ArticlesStateFailed).reason),
-                    ),
-                  );
-                break;
+            if (state is ArticlesStateFailed) {
+              ScaffoldMessenger.of(context)
+                ..hideCurrentSnackBar()
+                ..showSnackBar(
+                  SnackBar(
+                    content: Text(state.reason),
+                  ),
+                );
             }
           },
           builder: (context, state) => RefreshIndicator(
@@ -78,10 +76,10 @@ class _SliverArticlesAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextStyle? _headline6 = Theme.of(context).textTheme.headline6;
-    final ColorScheme _colorScheme = Theme.of(context).colorScheme;
-    final Color _scaffoldColor = Theme.of(context).scaffoldBackgroundColor;
-    final Color _cardColor = Theme.of(context).cardColor;
+    final TextStyle? headline6 = Theme.of(context).textTheme.headline6;
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    final Color scaffoldColor = Theme.of(context).scaffoldBackgroundColor;
+    final Color cardColor = Theme.of(context).cardColor;
 
     return SliverAppBar(
       centerTitle: false,
@@ -90,26 +88,26 @@ class _SliverArticlesAppBar extends StatelessWidget {
       flexibleSpace: BlurredContainer(
         sigma: 1,
         opacity: 0.8,
-        color: _scaffoldColor,
+        color: scaffoldColor,
       ),
       leading: IconButton(
         onPressed: () {},
         icon: SvgIcon(
           icon: AssetIcon.rocket,
-          color: _colorScheme.primary,
+          color: colorScheme.primary,
         ),
       ),
       title: Text(
         'Articles',
-        style: _headline6?.copyWith(
-          color: _colorScheme.primary,
+        style: headline6?.copyWith(
+          color: colorScheme.primary,
           fontWeight: FontWeight.bold,
         ),
       ),
       bottom: isLoading
           ? PreferredSize(
               child: LinearProgressIndicator(
-                backgroundColor: _cardColor,
+                backgroundColor: cardColor,
               ),
               preferredSize: Size(Size.infinite.width, 1),
             )

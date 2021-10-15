@@ -7,27 +7,18 @@ import 'package:nave_articles/app/viewmodels/articles/state.dart';
 class ArticlesViewModel extends Bloc<ArticlesEvent, ArticlesState> {
   ArticlesViewModel(
     this._repository,
-  ) : super(
-          ArticlesState.successful(articles: const [], categories: const []),
-        );
+  ) : super(ArticlesState.successful());
 
   final ArticlesRepository _repository;
 
   @override
   Stream<ArticlesState> mapEventToState(ArticlesEvent event) async* {
-    switch (event.runtimeType) {
-      case ArticlesEventGotten:
-        yield* _mapArticlesGottenOrOnRefreshToState();
-        break;
-      case ArticlesEventOnCategoryPressed:
-        yield* _mapArticlesOnCategoryPressed(
-            event as ArticlesEventOnCategoryPressed);
-        break;
-      case ArticlesEventOnRefresh:
-        yield* _mapArticlesGottenOrOnRefreshToState(isRefreshing: true);
-        break;
-      default:
-        break;
+    if (event is ArticlesEventGotten) {
+      yield* _mapArticlesGottenOrOnRefreshToState();
+    } else if (event is ArticlesEventOnCategoryPressed) {
+      yield* _mapArticlesOnCategoryPressed(event);
+    } else if (event is ArticlesEventOnRefresh) {
+      yield* _mapArticlesGottenOrOnRefreshToState(isRefreshing: true);
     }
   }
 
@@ -35,7 +26,7 @@ class ArticlesViewModel extends Bloc<ArticlesEvent, ArticlesState> {
     final bool isRefreshing = false,
   }) async* {
     try {
-      yield !isRefreshing ? ArticlesState.loading() : state.copyWith();
+      yield isRefreshing ? ArticlesState.loading() : state.copyWith();
       final response = await _repository.getArticlesAndCategories();
       yield ArticlesState.successful(
         articles: response[Response.articles],

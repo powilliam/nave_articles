@@ -8,13 +8,13 @@ extension AssetIconExtension on AssetIcon {
 }
 
 class SvgIcon extends StatelessWidget {
-  const SvgIcon(
-      {Key? key,
-      required this.icon,
-      this.width = 24,
-      this.height = 24,
-      this.color = Colors.white})
-      : super(key: key);
+  const SvgIcon({
+    Key? key,
+    required this.icon,
+    this.width = 24,
+    this.height = 24,
+    this.color = Colors.white,
+  }) : super(key: key);
 
   final AssetIcon icon;
   final double? width;

@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:nave_articles/app/domain/entities/category.dart';
 
-abstract class ArticlesEvent {
+abstract class ArticlesEvent extends Equatable {
   const ArticlesEvent();
 
   factory ArticlesEvent.gotten() => ArticlesEventGotten();
@@ -18,12 +18,12 @@ abstract class ArticlesEvent {
   factory ArticlesEvent.onRefresh() => const ArticlesEventOnRefresh();
 }
 
-class ArticlesEventGotten extends ArticlesEvent with EquatableMixin {
+class ArticlesEventGotten extends ArticlesEvent {
   @override
   List<Object> get props => [];
 }
 
-class ArticlesEventOnCategoryPressed extends ArticlesEvent with EquatableMixin {
+class ArticlesEventOnCategoryPressed extends ArticlesEvent {
   const ArticlesEventOnCategoryPressed({
     required this.isSelected,
     required this.category,
@@ -36,7 +36,7 @@ class ArticlesEventOnCategoryPressed extends ArticlesEvent with EquatableMixin {
   List<Object> get props => [isSelected, category];
 }
 
-class ArticlesEventOnRefresh extends ArticlesEvent with EquatableMixin {
+class ArticlesEventOnRefresh extends ArticlesEvent {
   const ArticlesEventOnRefresh();
 
   @override
