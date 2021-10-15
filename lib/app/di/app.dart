@@ -16,10 +16,8 @@ abstract class AppContainer {
       GetNaveArticlesUseCase(provideGetRssAsJsonUseCaseForArticles);
 
   static final ArticlesRepository provideArticlesRepository =
-      ArticlesRepository(getNaveArticlesUseCase: provideNaveArticlesUseCase);
+      ArticlesRepository(provideNaveArticlesUseCase);
 
-  static final ArticlesViewModel provideArticlesViewModel = ArticlesViewModel(
-    repository: provideArticlesRepository,
-    getNaveArticlesUseCase: provideNaveArticlesUseCase,
-  );
+  static final ArticlesViewModel provideArticlesViewModel =
+      ArticlesViewModel(provideArticlesRepository);
 }

@@ -4,14 +4,14 @@ import 'package:nave_articles/app/domain/usecases/nave.dart';
 enum Response { articles, categories }
 
 class ArticlesRepository {
-  const ArticlesRepository({
-    required this.getNaveArticlesUseCase,
-  });
+  const ArticlesRepository(
+    this._getNaveArticlesUseCase,
+  );
 
-  final GetNaveArticlesUseCase getNaveArticlesUseCase;
+  final GetNaveArticlesUseCase _getNaveArticlesUseCase;
 
   Future<Map<Response, dynamic>> getArticlesAndCategories() async {
-    final dto = await getNaveArticlesUseCase.execute();
+    final dto = await _getNaveArticlesUseCase.execute();
     return {
       Response.articles: dto.articles,
       Response.categories: dto.articles

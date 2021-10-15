@@ -1,36 +1,24 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nave_articles/app/domain/entities/category.dart';
 import 'package:nave_articles/app/domain/repositories/articles.dart';
-import 'package:nave_articles/app/domain/usecases/nave.dart';
 import 'package:nave_articles/app/viewmodels/articles/event.dart';
 import 'package:nave_articles/app/viewmodels/articles/state.dart';
 
 class ArticlesViewModel extends Bloc<ArticlesEvent, ArticlesState> {
-  ArticlesViewModel({
-    required this.repository,
-    required this.getNaveArticlesUseCase,
-  }) : super(
-          ArticlesState.successful(articles: const [], categories: const []),
-        );
+  ArticlesViewModel(
+    this._repository,
+  ) : super(ArticlesState.successful());
 
-  final ArticlesRepository repository;
-  final GetNaveArticlesUseCase getNaveArticlesUseCase;
+  final ArticlesRepository _repository;
 
   @override
   Stream<ArticlesState> mapEventToState(ArticlesEvent event) async* {
-    switch (event.runtimeType) {
-      case ArticlesEventGotten:
-        yield* _mapArticlesGottenOrOnRefreshToState();
-        break;
-      case ArticlesEventOnCategoryPressed:
-        yield* _mapArticlesOnCategoryPressed(
-            event as ArticlesEventOnCategoryPressed);
-        break;
-      case ArticlesEventOnRefresh:
-        yield* _mapArticlesGottenOrOnRefreshToState(isRefreshing: true);
-        break;
-      default:
-        break;
+    if (event is ArticlesEventGotten) {
+      yield* _mapArticlesGottenOrOnRefreshToState();
+    } else if (event is ArticlesEventOnCategoryPressed) {
+      yield* _mapArticlesOnCategoryPressed(event);
+    } else if (event is ArticlesEventOnRefresh) {
+      yield* _mapArticlesGottenOrOnRefreshToState(isRefreshing: true);
     }
   }
 
@@ -38,8 +26,8 @@ class ArticlesViewModel extends Bloc<ArticlesEvent, ArticlesState> {
     final bool isRefreshing = false,
   }) async* {
     try {
-      yield !isRefreshing ? ArticlesState.loading() : state.copyWith();
-      final response = await repository.getArticlesAndCategories();
+      yield isRefreshing ? ArticlesState.loading() : state.copyWith();
+      final response = await _repository.getArticlesAndCategories();
       yield ArticlesState.successful(
         articles: response[Response.articles],
         categories: response[Response.categories],
