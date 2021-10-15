@@ -1,20 +1,17 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nave_articles/app/domain/entities/category.dart';
 import 'package:nave_articles/app/domain/repositories/articles.dart';
-import 'package:nave_articles/app/domain/usecases/nave.dart';
 import 'package:nave_articles/app/viewmodels/articles/event.dart';
 import 'package:nave_articles/app/viewmodels/articles/state.dart';
 
 class ArticlesViewModel extends Bloc<ArticlesEvent, ArticlesState> {
-  ArticlesViewModel({
-    required this.repository,
-    required this.getNaveArticlesUseCase,
-  }) : super(
+  ArticlesViewModel(
+    this._repository,
+  ) : super(
           ArticlesState.successful(articles: const [], categories: const []),
         );
 
-  final ArticlesRepository repository;
-  final GetNaveArticlesUseCase getNaveArticlesUseCase;
+  final ArticlesRepository _repository;
 
   @override
   Stream<ArticlesState> mapEventToState(ArticlesEvent event) async* {
@@ -39,7 +36,7 @@ class ArticlesViewModel extends Bloc<ArticlesEvent, ArticlesState> {
   }) async* {
     try {
       yield !isRefreshing ? ArticlesState.loading() : state.copyWith();
-      final response = await repository.getArticlesAndCategories();
+      final response = await _repository.getArticlesAndCategories();
       yield ArticlesState.successful(
         articles: response[Response.articles],
         categories: response[Response.categories],
