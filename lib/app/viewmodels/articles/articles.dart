@@ -26,7 +26,7 @@ class ArticlesViewModel extends Bloc<ArticlesEvent, ArticlesState> {
     final bool isRefreshing = false,
   }) async* {
     try {
-      yield isRefreshing ? ArticlesState.loading() : state.copyWith();
+      yield !isRefreshing ? ArticlesState.loading() : state.copyWith();
       final response = await _repository.getArticlesAndCategories();
       yield ArticlesState.successful(
         articles: response[Response.articles],
